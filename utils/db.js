@@ -5,53 +5,46 @@ class DBClient {
     const host = process.env.DB_HOST || 'localhost';
     const port = process.env.DB_PORT || 27017;
     const database = process.env.DB_DATABASE || 'files_manager';
-    const url = `mongodb://${host}:${port}`;
-    this.dbName = database;
-    this.client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-    this.connected = false;
+
+    const uri = `mongodb://${host}:${port}`;
+    this.client = new MongoClient(uri, { useUnifiedTopology: true });
+    this.db = null;
 
     this.client.connect()
       .then(() => {
-        this.connected = true;
+        this.db = this.client.db(database);
       })
       .catch((error) => {
-        console.error('MongoDB connection error:', error);
+        console.error('Failed to connect to MongoDB:', error.message);
       });
   }
 
   isAlive() {
-    return this.connected;
+      return this.client?.topology?.isConnected() || false;
   }
 
   async nbUsers() {
-    if (!this.connected) {
-      return 0;
-    }
-    const db = this.client.db(this.dbName);
     try {
-      const usersCount = await db.collection('users').countDocuments();
-      return usersCount;
+      if (!this.db) throw new Error('Database not initialized');
+      const collection = this.db.collection('users');
+      return await collection.countDocuments();
     } catch (error) {
-      console.error('Error counting users:', error);
+      console.error('Error in nbUsers:', error.message);
       return 0;
     }
   }
 
   async nbFiles() {
-    if (!this.Connected) {
-      return 0;
-    }
-    const db = this.client.db(this.dbName);
     try {
-      const filesCount = await db.collection('files').countDocuments();
-      return filesCount;
+      if (!this.db) throw new Error('Database not initialized');
+      const collection = this.db.collection('files');
+      return await collection.countDocuments();
     } catch (error) {
-      console.error('Error counting files:', error);
+      console.error('Error in nbFiles:', error.message);
       return 0;
     }
   }
 }
 
-// Create and export a single instance of DBClient
 const dbClient = new DBClient();
-export default dbClient;
+module.exports = dbClient;
