@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
 
-
 class DBClient {
   constructor() {
     const host = process.env.DB_HOST || 'localhost';
@@ -11,13 +10,12 @@ class DBClient {
     this.client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     this.connected = false;
 
-
     this.client.connect()
       .then(() => {
-	this.connected = true;
+        this.connected = true;
       })
       .catch((error) => {
-	  console.error('MongoDB connection error:', error);
+        console.error('MongoDB connection error:', error);
       });
   }
 
@@ -30,7 +28,7 @@ class DBClient {
       return 0;
     }
     const db = this.client.db(this.dbName);
-    try {	    
+    try {
       const usersCount = await db.collection('users').countDocuments();
       return usersCount;
     } catch (error) {
@@ -38,19 +36,19 @@ class DBClient {
       return 0;
     }
   }
-  
+
   async nbFiles() {
-      if (!this.Connected) {
-	  return 0;
-      }
-      const db = this.client.db(this.dbName);
-      try {
-        const filesCount = await db.collection('files').countDocuments();
-        return filesCount;
-      } catch (error) {
-	console.error('Error counting files:', error);
-	return 0;
-      }
+    if (!this.Connected) {
+      return 0;
+    }
+    const db = this.client.db(this.dbName);
+    try {
+      const filesCount = await db.collection('files').countDocuments();
+      return filesCount;
+    } catch (error) {
+      console.error('Error counting files:', error);
+      return 0;
+    }
   }
 }
 
