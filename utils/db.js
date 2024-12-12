@@ -22,7 +22,7 @@ class DBClient {
   }
 
   isAlive() {
-      return this.client?.topology?.isConnected() || false;
+      return this.client.isConnected();
   }
 
   async nbUsers() {
@@ -38,7 +38,7 @@ class DBClient {
 
   async nbFiles() {
     try {
-      if (!this.db) throw new Error('Database not initialized');
+      if (!this.db) throw new Error('Db not initialized');
       const collection = this.db.collection('files');
       return await collection.countDocuments();
     } catch (error) {
