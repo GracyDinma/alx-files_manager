@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const routes = require('./routes/index');
 
+app.use(express.json());
+
 // Use routes
 app.use(routes);
 
