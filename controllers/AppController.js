@@ -2,7 +2,7 @@
 import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
-export default class AppController {
+class AppController {
   static getStatus(req, res) {
     res.status(200).json({
       redis: redisClient.isAlive(),
@@ -18,4 +18,4 @@ export default class AppController {
   }
 }
 
-module.exports = AppController;
+export default AppController;

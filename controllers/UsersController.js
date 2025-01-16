@@ -4,8 +4,7 @@ import Queue from 'bull/lib/queue';
 import dbClient from '../utils/db';
 
 const userQueue = new Queue('email sending')
-
-export default class UsersController{
+class UsersController{
     static async postNew(req, res) {
         const { email, password } = req.body;
 
@@ -31,9 +30,11 @@ export default class UsersController{
         res.status(201).json({ email, id: userId});
     }
 
-    static async Meget(req, res) {
+    static async getMe(req, res) {
         const { user } = req;
         res.status(200).json({ email: user.email, id: user._id.toString() });
     } 
 }
-module.exports = UsersController;
+
+
+export default UsersController;

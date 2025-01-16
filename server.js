@@ -1,12 +1,12 @@
-const express = require('express');
-
+import express from 'express';
+import controllerRouting from './routes/index';
 const app = express();
-const routes = require('./routes/index');
+
 
 app.use(express.json());
 
-// Use routes
-app.use(routes);
+
+controllerRouting(app);
 
 const PORT = process.env.PORT || 5000;
 
@@ -14,3 +14,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
+
+export default app;
