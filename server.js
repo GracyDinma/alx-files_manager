@@ -1,7 +1,8 @@
 import express from 'express';
-import controllerRouting from './routes/index';
-const app = express();
 
+import controllerRouting from './routes/index';
+
+const app = express();
 
 app.use(express.json());
 
